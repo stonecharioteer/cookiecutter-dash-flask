@@ -1,0 +1,8 @@
+{
+    "app_name": "Dash Flask Barebones",
+    "app_slug": "{{ cookiecutter.app_name|lower|replace(' ', '_') }}",
+    "app_description": "A Barebones Dash Project using Flask routes.",
+    "directory_name": "{{ cookiecutter.app_slug }}",
+    "author_email": null,
+    "author_name": null
+}
