@@ -10,6 +10,7 @@ Resources:
 
 import logging
 import logging.handlers
+import warnings
 
 import flask
 from flask.logging import default_handler
@@ -53,17 +54,35 @@ def register_loggers(app: flask.Flask, stream=True, log_file=None, custom_handle
         )
     )
 
+    app_log_level = kwargs.get("loglevel", logging.INFO)
+    app.logger.setLevel(app_log_level)
+
     if stream:
         stream_handler = logging.StreamHandler()
-        stream_handler.setLevel(kwargs.get("stream_handler_level", logging.WARNING))
+        stream_handler_level = kwargs.get("stream_handler_level", logging.WARNING)
+        stream_handler.setLevel(stream_handler_level)
         stream_handler.setFormatter(formatter)
-
+        if stream_handler_level < app_log_level:
+            warnings.warn((
+                "The loglevel for the application ({0}) is higher "
+                "than the log level of the file handler ({1}). "
+                "If the application logs anything below {0}, "
+                "they will be not be printed to STDOUT."
+                ).format(logging.getLevelName(app_log_level), logging.getLevelName(stream_handler_level)))
         app.logger.addHandler(stream_handler)
 
     if log_file is not None:
         file_handler = logging.handlers.TimedRotatingFileHandler(
             filename=log_file, when="W0", interval=1, backupCount=4, utc=True, )
-        file_handler.setLevel(kwargs.get("file_handler_level", logging.DEBUG))
+        file_handler_level = kwargs.get("file_handler_level", logging.DEBUG)
+        file_handler.setLevel(file_handler_level)
+        if file_handler_level < app_log_level:
+            warnings.warn((
+                "The loglevel for the application ({0}) is higher "
+                "than the log level of the file handler ({1}). "
+                "If the application logs anything below {0}, "
+                "they will be not be logged to the file."
+                ).format(logging.getLevelName(app_log_level), logging.getLevelName(file_handler_level)))
         file_handler.setFormatter(formatter)
         app.logger.addHandler(file_handler)
 
