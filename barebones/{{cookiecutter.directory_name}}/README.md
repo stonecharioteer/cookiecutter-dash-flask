@@ -1,6 +1,5 @@
 # {{ cookiecutter.app_name }}
 
-
 {{ cookiecutter.app_description }}
 
 ## Installation
@@ -25,11 +24,11 @@ gunicorn -w 10 -b localhost:1000 wsgi:app
 
 This application follows a modular configuration system, as detailed in [Explore Flask](https://exploreflask.org).
 
-Create `instance/config.py` or set an environment variable `{{ cookiecutter.app_name|upper}}_CONFIG` to point to a config. You may use `config/instance_template.py` as a template to help you create that file.
+Create `instance/config.py` or set an environment variable `{{ cookiecutter.app_slug|upper}}_CONFIG` to point to a config. You may use `config/instance_template.py` as a template to help you create that file.
 
-Additionally, all environment variables using the `{{ cookiecutter.app_name|upper}}_` prefix will be read and the appropriate configuration variables will be overwritten.
+Additionally, all environment variables using the `{{ cookiecutter.app_slug|upper}}_` prefix will be read and the appropriate configuration variables will be overwritten.
 
-Example: setting `{{ cookiecutter.app_name|upper}}_LOGFILE` will overwrite the value of the `LOGFILE` variable.
+Example: setting `{{ cookiecutter.app_slug|upper}}_LOGFILE` will overwrite the value of the `LOGFILE` variable.
 
 
 ## Extending the API
@@ -47,7 +46,6 @@ Example: setting `{{ cookiecutter.app_name|upper}}_LOGFILE` will overwrite the v
 <!-- TODO: Explain how to add new routes to the API -->
 
 #### Adding New Blueprints
-
 
 ### Writing Backend Tests
 
