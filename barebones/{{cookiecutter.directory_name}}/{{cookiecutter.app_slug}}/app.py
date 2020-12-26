@@ -87,4 +87,7 @@ def create_app(config=None, config_file=None, **kwargs):
     from .logger import register_loggers
     register_loggers(app, log_file="{{ cookiecutter.app_slug }}.log")
 
+    from .extensions import compress
+    compress.init_app(app)
+
     return app
