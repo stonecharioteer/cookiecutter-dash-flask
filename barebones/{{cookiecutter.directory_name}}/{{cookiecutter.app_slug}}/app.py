@@ -15,7 +15,7 @@ def create_app(config=None, config_file=None, **kwargs):
             config_file: path to a config file
 
         Keyword Parameters:
-            configure_dash: Flag to forgo the registration of the Dash API.
+            register_dash: Flag to forgo the registration of the Dash API.
                             This is useful during testing.
 
                             Additionally, any kwargs that are prefixed with
@@ -61,8 +61,8 @@ def create_app(config=None, config_file=None, **kwargs):
             value = float(value)
         app.config[config_name] = value
 
-    # configure the dash application
-    if kwargs.get("configure_dash", True):
+    # register the dash application
+    if kwargs.get("register_dash", True):
         from .ui import register_dash_app
         register_dash_app(app, **kwargs)
 
