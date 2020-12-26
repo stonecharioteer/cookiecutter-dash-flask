@@ -2,7 +2,7 @@
 import os
 
 from flask import Flask
-import dash
+from secure import SecureHeaders
 
 
 def create_app(config=None, config_file=None, **kwargs):
@@ -70,5 +70,21 @@ def create_app(config=None, config_file=None, **kwargs):
     from .blueprints import core
 
     app.register_blueprint(core, url_prefix="/api/v1")
+
+    # add secure headers for OWASP conformance.
+    secure_headers = SecureHeaders()
+
+
+    @app.after_request
+    def set_secure_headers(response):
+        """Add secure headers to the flask response
+        To learn how to set secure cookies as well,
+        see: https://secure.readthedocs.io/en/latest/frameworks.html#flask
+        """
+        secure_headers.flask(response)
+        return response
+
+    from .logger import register_loggers
+    register_loggers(app, log_file="{{ cookiecutter.app_slug }}.log")
 
     return app
