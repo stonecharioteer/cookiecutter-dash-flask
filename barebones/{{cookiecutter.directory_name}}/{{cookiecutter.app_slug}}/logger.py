@@ -67,9 +67,10 @@ def register_loggers(app: flask.Flask, stream=True, log_file=None, custom_handle
         file_handler.setFormatter(formatter)
         app.logger.addHandler(file_handler)
 
-    for handler in custom_handlers:
-        handler.setFormatter(formatter)
-        app.logger.addHandler(handler)
+    if custom_handlers is not None:
+        for handler in custom_handlers:
+            handler.setFormatter(formatter)
+            app.logger.addHandler(handler)
 
     if not kwargs.get("keep_default_handler"):
         app.logger.removeHandler(default_handler)
